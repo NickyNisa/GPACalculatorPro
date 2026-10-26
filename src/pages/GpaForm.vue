@@ -47,8 +47,9 @@
 
 <script setup>
 import { ref, watch, nextTick } from 'vue'
+import { useSubjectStore } from '../stores/subjectStore'
 
-const emit = defineEmits(['add-subject'])
+const subjectStore = useSubjectStore()
 const myForm = ref(null)
 
 const form = ref({
@@ -87,7 +88,8 @@ const submitForm = () => {
     myForm.value.validate().then(async (success) => {
       if (success) {
         const { grade, point } = calculateGrade(form.value.score)
-        emit('add-subject', {
+
+        await subjectStore.addSubject({
           name: form.value.name,
           credit: Number(form.value.credit),
           score: Number(form.value.score),
