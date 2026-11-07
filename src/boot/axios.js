@@ -1,11 +1,14 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
-const api = axios.create({ baseURL: 'http://localhost:3000' })
+import { useAuthStore } from '@/stores/auth-store'
+const api = axios.create({ baseURL: 'http://172.26.117.16:3007/api/v1' })
 
 api.interceptors.request.use(
   (config) => {
-    config.headers['Content-type'] = 'application/json; charset=UTF-8'
-    config.headers['Authorization'] = 'Bearer coc2026'
+    const authStore = useAuthStore()
+    if (authStore.accessToken) {
+      config.headers['Authorization'] = `Bearer ${authStore.accessToken}`
+    }
     return config
   },
   (error) => {

@@ -23,6 +23,14 @@
       "grade": "D+",
       "point": 1.5,
       "id": 3
+    },
+    {
+      "name": "test",
+      "credit": 1,
+      "score": 76,
+      "grade": "B+",
+      "point": 3.5,
+      "id": 4
     }
   ]
 }
