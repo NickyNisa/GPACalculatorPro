@@ -12,7 +12,7 @@ export const useSubjectStore = defineStore('subject', () => {
     errorMessage.value = ''
     try {
       const response = await api.get('/subjects')
-      subjects.value = response.data
+      subjects.value = response.data.data
     } catch (error) {
       errorMessage.value = error.message
       console.error('Fetch Error:', error)
@@ -24,7 +24,7 @@ export const useSubjectStore = defineStore('subject', () => {
   const addSubject = async (newSubject) => {
     try {
       const response = await api.post('/subjects', newSubject)
-      subjects.value.push(response.data)
+      subjects.value.push(response.data.data)
     } catch (error) {
       console.error('Create Error:', error)
     }
@@ -34,7 +34,7 @@ export const useSubjectStore = defineStore('subject', () => {
     try {
       const response = await api.put(`/subjects/${id}`, updatedData)
       const index = subjects.value.findIndex((sub) => sub.id === id)
-      if (index !== -1) subjects.value[index] = response.data
+      if (index !== -1) subjects.value[index] = response.data.data
     } catch (error) {
       console.error('Update Error:', error)
     }
