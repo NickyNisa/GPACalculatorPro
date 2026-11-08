@@ -1,5 +1,4 @@
 <template>
-  
   <q-page class="flex flex-center bg-grey-2">
     <q-card class="q-pa-md shadow-2" style="width: 100%; max-width: 400px; border-radius: 12px">
       <q-card-section class="text-center">
@@ -9,7 +8,7 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit="handleLogin" class="q-gutter-md">
+        <q-form @submit.prevent="handleLogin" class="q-gutter-md">
           <q-input
             outlined
             v-model="username"
@@ -72,7 +71,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/auth-store'
 
 const username = ref('')
 const password = ref('')
@@ -81,12 +80,13 @@ const authStore = useAuthStore()
 const showErrorDialog = ref(false)
 const isPwd = ref(true)
 
-const handleLogin = () => {
-  if (username.value === 'student' && password.value === '123456') {
-    authStore.login(username.value)
+const handleLogin = async () => {
+  try {
+    await authStore.login(username.value, password.value)
     router.push('/')
-  } else {
+  } catch (error) {
     showErrorDialog.value = true
+    console.error('เข้าสู่ระบบไม่สำเร็จ:', error)
   }
 }
 </script>

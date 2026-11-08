@@ -7,7 +7,7 @@ import {
 } from 'vue-router'
 
 import routes from './routes.js'
-import { useAuthStore } from '@/stores/authStore.js'
+import { useAuthStore } from '@/stores/auth-store.js'
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -33,16 +33,22 @@ export default defineRouter((/* { store, ssrContext } */) => {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE),
   })
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach((to) => {
     const authStore = useAuthStore()
 
-    if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-      next('/login')
-    } else if (to.path === '/login' && authStore.isLoggedIn) {
-      next('/')
-    } else {
-      next()
+    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+      return { path: '/login' }
     }
+
+    if (to.path === '/login' && authStore.isAuthenticated) {
+      return { path: '/' }
+    }
+
+    if (to.meta.roles && !to.meta.roles.includes(authStore.role)) {
+      return { path: '/' }
+    }
+
+    return true
   })
 
   return Router

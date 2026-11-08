@@ -4,7 +4,11 @@
       <div class="row items-center justify-between q-mb-md">
         <div class="text-h6 text-weight-bold">รายชื่อวิชา ({{ subjectStore.subjects.length }})</div>
         <q-btn
-          v-if="subjectStore.subjects.length > 0 && !subjectStore.isLoading"
+          v-if="
+            subjectStore.subjects.length > 0 &&
+            !subjectStore.isLoading &&
+            authStore.role === 'teacher'
+          "
           color="negative"
           outline
           icon="delete_sweep"
@@ -51,7 +55,7 @@
             </q-item-label>
           </q-item-section>
 
-          <q-item-section side class="row">
+          <q-item-section side class="row" v-if="authStore.role === 'teacher'">
             <q-btn flat round color="warning" icon="edit" @click="openEditDialog(subject)">
               <q-tooltip>แก้ไขวิชานี้</q-tooltip>
             </q-btn>
@@ -94,9 +98,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useSubjectStore } from '../stores/subjectStore'
+import { useAuthStore } from '@/stores/auth-store'
 
 const subjectStore = useSubjectStore()
-
+const authStore = useAuthStore()
 const isEditDialogOpen = ref(false)
 const editForm = ref({
   id: null,
