@@ -43,7 +43,7 @@
 
       <q-card-section class="text-center text-grey-7 bg-grey-1 q-mt-md" style="border-radius: 8px">
         <div class="text-weight-bold">Demo Account</div>
-        <div>Username: student</div>
+        <div>Username: student/teacher</div>
         <div>Password: 123456</div>
       </q-card-section>
     </q-card>
